@@ -131,7 +131,7 @@ up :-
             retract(location(player, X, Y)),
             NewX is X,
             NewY is Y - 1,
-            asserta(location(player, NewX, NewY)) 
+            asserta(location(player, NewX, NewY))
         )
     ),
     
