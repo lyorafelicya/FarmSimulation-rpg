@@ -114,7 +114,7 @@ up :-
     is_border(NewX, NewY) -> 
     (
         write('You hit the wall. You got head bump.'), nl,
-        write('Daijoubu desu ka? (@ _ @)//'), nl 
+        write('Daijoubu desu ka? (@ v @)//'), nl 
     );
     % else
     (   
@@ -124,7 +124,7 @@ up :-
         is_water(NewX, NewY) ->
         (
             write('You nearly drowned. Your clothes get soaked.'), nl,
-            write('Daijoubu desu ka? (@ _ @)//'), nl 
+            write('Daijoubu desu ka? (@ v @)//'), nl 
         );
         % else
         (
@@ -135,10 +135,7 @@ up :-
         )
     ),
     
-    retract(time(M, D)),
-    NewM is M + 33,
-    assertz(time(NewM, D)),
-    time_check.
+    add_time(3).
 
 /*Move : Down*/
 down :-
@@ -149,7 +146,7 @@ down :-
     is_border(NewX, NewY) -> 
     (
         write('You hit the wall. You got head bump.'), nl,
-        write('Daijoubu desu ka? (@ _ @)//'), nl 
+        write('Daijoubu desu ka? (@ v @)//'), nl 
     );
     % else
     (
@@ -159,7 +156,7 @@ down :-
         is_water(NewX, NewY) ->
         (
             write('You nearly drowned. Your clothes get soaked.'), nl,
-            write('Daijoubu desu ka? (@ _ @)//'), nl 
+            write('Daijoubu desu ka? (@ v @)//'), nl 
         );
         % else
         (
@@ -184,7 +181,7 @@ left :-
     is_border(NewX, NewY) -> 
     (
         write('You hit the wall. You got head bump.'), nl,
-        write('Daijoubu desu ka? (@ _ @)//'), nl 
+        write('Daijoubu desu ka? (@ v @)//'), nl 
     );
     % else
     (
@@ -194,7 +191,7 @@ left :-
         is_water(NewX, NewY) ->
         (
             write('You nearly drowned. Your clothes get soaked.'), nl,
-            write('Daijoubu desu ka? (@ _ @)//'), nl 
+            write('Daijoubu desu ka? (@ v @)//'), nl 
         );
         % else
         (
@@ -219,7 +216,7 @@ right :-
     is_border(NewX, NewY) -> 
     (
         write('You hit the wall. You got head bump.'), nl,
-        write('Daijoubu desu ka? (@ _ @)//'), nl 
+        write('Daijoubu desu ka? (@ v @)//'), nl 
     );
     % else
     (
@@ -229,7 +226,7 @@ right :-
         is_water(NewX, NewY) ->
         (
             write('You nearly drowned. Your clothes get soaked.'), nl,
-            write('Daijoubu desu ka? (@ _ @)//'), nl 
+            write('Daijoubu desu ka? (@ v @)//'), nl 
         );
         % else
         (

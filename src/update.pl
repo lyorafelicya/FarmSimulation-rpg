@@ -1,101 +1,117 @@
+/* Modul: Update */
+
+/* Menambah exp farming */
+add_farming(E) :-
+    retract(exp_farming(Exp)),
+    NewExp is Exp + E,
+    assertz(exp_farming(NewExp)),
+    exp_check.
+
+/* Menambah exp fishing */
+add_fishing(E) :-
+    retract(exp_fishing(Exp)),
+    NewExp is Exp + E,
+    assertz(exp_fishing(NewExp)),
+    exp_check.
+
+/* Menambah exp ranching */
+add_ranching(E) :-
+    retract(exp_ranching(Exp)),
+    NewExp is Exp + E,
+    assertz(exp_ranching(NewExp)),
+    exp_check.
+
+/* Menambah menit */
+add_time(M) :-
+    retract(time(Min, Day)),
+    NewMin is Min + M,
+    assertz(time(NewMin, Day)),
+    time_check.
+
+/* Update hari */
 time_check :- 
     time(M, D),
-    M >= 1440 -> 
-    (
+    ( M >= 1440 -> 
+      (
         retract(time(M,D)),
         NewM is M - 1440, 
         NewD is D + 1,
         assertz(time(NewM , NewD))
+      );
+      time(M,D)
     ).
 
+/* Menunjukkan waktu */
+show_time :-
+    time(M,D),
+    Minute is mod(M , 60),
+    Hour is M // 60,
+    Day is D,
+    write('Today is Day '),write(Day),write(', '),
+    (
+        Hour < 10 -> 
+            write('0'),
+            write(Hour), 
+            write(':'), 
+            (
+                Minute < 10 ->
+                    write('0'),
+                    write(Minute), 
+                    write('.'),nl; 
+                % else
+                    write(Minute),
+                    write('.'),nl
+            );
+        % else
+            write(Hour),
+            write(':'),
+            (
+                Minute < 10 -> 
+                    write('0'),
+                    write(Minute), 
+                    write('.'),nl;
+                % else 
+                    write(Minute),
+                    write('.'),nl
+            )
+    ).
+
+/* Update level */
 exp_check :-
     exp(E), 
     exp_farming(EFarm),
     exp_fishing(EFish),
     exp_ranching(ERanch),
     exp_batas(EB),
-
-    (
-        E >= EB -> 
-        (
-            retract(level(L)),
-            NewL is L + 1,
-            assertz(level(NewL))
-        )
-    ),
-
-    (
-        EFarm >= EB -> 
-        (
-            retract(level_farming(L)),
-            NewL is L + 1,
-            assertz(level_farming(NewL))
-        )
-    ),
-
-    (
-        EFish >= EB -> 
-        (
-            retract(level_fishing(L)),
-            NewL is L + 1,
-            assertz(level_fishing(NewL))
-        )
-    ),
-    
-    (
-        ERanch >= EB -> 
-        (
-            retract(level_ranching(L)),
-            NewL is L + 1,
-            assertz(level_ranching(NewL))
-        )
+    ( (      E >= EB -> (retract(level(L)), NewL is L + 1, assertz(level(NewL))));
+      (  EFarm >= EB -> (retract(level_farming(L)), NewL is L + 1, assertz(level_farming(NewL))) ; exp(E));
+      (  EFish >= EB -> (retract(level_fishing(L)), NewL is L + 1, assertz(level_fishing(NewL))) ; exp(E));
+      ( ERanch >= EB -> (retract(level_ranching(L)), NewL is L + 1, assertz(level_ranching(NewL))) ; exp(E)) 
     ).
 
-/* APPEND & DELETE BELUM SELESAI
-[(apple, 5), (banana, 4), (carrot, 5)]
 
-check_inv(Item , [] , Idx) :- Idx is -1.
-
-check_inv(Item , [(Head,num) | Tail] , Idx) :-
-    (
-        Item \= Head -> NewIdx is Idx + 1 , check_inv(Item , Tail , NewIdx)
-    ).
-
-append_inv(Item) :-
-    retract(inv(I)),
-    (
-        check_inv(Item , I , isFound),
-        (isFound = True ->
-            
-        )
-    )
-
-    append(I, [(Item)] , NewI),
-    assertz(inv(NewI)).
-
-delete_inv(Item) :-
-    retract(inv(I)),
-    select(Item, I, NewI),
-    assertz(inv(NewI)).
-*/
-
-print_inv :-
-    inv(I),
-    print_head_list(I)
-
-print_head_list([]) :- !.
-print_head_list(List) :-
-    List = [Head|Tail],
-    Head = (Name, Number),
-    write(Number),
-    write(' x  '),
-    write(Name),
-    nl,
-    print_head_list(Tail).
+/* Teleportation */
 
 update_loc(X, Y) :-
     retract(location(player,_,_)),
     asserta(location(player,X,Y)).
+
+/* Check State */
+
+/* diselipin di awal setiap command cuy */
+
+goal_state :- 
+    money(Money),
+    time(M,D),
+    Money >= 20000,
+    TotalTime is M + D*1440,
+    TotalTime =< 365*1440.
+
+fail_state :- \+ (goal_state).
+
+print_goal_state :- !.
+print_fail_state :- !.
+
 
 /*
 cheat :-

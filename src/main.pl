@@ -1,17 +1,20 @@
 /* File: main.pl */
 /* Program utama */
 
-
 :- include('fact.pl').
 :- include('map.pl').
 :- include('art.pl').
 :- include('help.pl').
 :- include('update.pl').
+:- include('inventory.pl').
+:- include('farming.pl').
+:- include('fishing.pl').
+:- include('ranching.pl').
 
 
 :- dynamic(level/1).
 :- dynamic(job/1).
-:- dynamic(gold/1).
+:- dynamic(money/1).
 
 :- dynamic(level_farming/1).
 :- dynamic(exp_farming/1).
@@ -19,9 +22,6 @@
 :- dynamic(exp_fishing/1).
 :- dynamic(level_ranching/1).
 :- dynamic(exp_ranching/1).
-
-:- dynamic(time/2).
-/*param ke-1 : menit , param ke-2 : day*/
 
 :- dynamic(level_shovel/1).
 :- dynamic(level_fishing_rod/1).
@@ -31,9 +31,9 @@
 :- dynamic(mult_ranching/1).
 
 
-/*DEFAULT STATE*/
+/*DEFAULT PLAYER STATE*/
 level(1).
-gold(0).
+money(0).
 
 mult_farming(1).
 level_farming(1).
@@ -47,31 +47,36 @@ mult_ranching(1).
 level_ranching(1).
 exp_ranching(0).
 
-/*Inventory*/
-inv([]).
-
 
 /* Experience */
 exp(E) :- 
-    E is exp_farming + exp_fishing + exp_ranching.
+    exp_farming(ExpFarm),
+    exp_fishing(ExpFish),
+    exp_ranching(ExpRanch),    
+    E is ExpFarm + ExpFish + ExpRanch.
 
-exp_batas(Gauge) :-
-    level(L), (Gauge is (L**2) * 30).
+exp_batas(Batas)          :- level(L), (Batas is (L**2) * 30).
+exp_batas_farming(Batas)  :- level_farming(L), (Batas is (L**2) * 30).
+exp_batas_fishing(Batas)  :- level_fishing(L), (Batas is (L**2) * 30).
+exp_batas_ranching(Batas) :- level_ranching(L), (Batas is (L**2) * 30).
 
-/*Professions*/
+/* Professions */
 profession(farmer).
 profession(fisherman).
 profession(rancher).
 
-/*Time*/
-/*time (0 <= t < 1440) -> dihitung per move (sesuai bobot)*/
-/*day (1 <= d <= 20)*/
+/* Time (m,d) */
+/* param ke-1 : menit , param ke-2 : day */
+/* menit(0 <= m < 1440) -> dihitung per move (sesuai bobot) */
+/* day (1 <= d <= 20) */
+:- dynamic(time/2).
 time(360,1).
 
 
-/*Item's level*/
-level_shovel(1).
-level_fishing_rod(1).
+/* Tools */
+:- dynamic(tool/2).
+tool(shovel, 1).
+tool(fishing_rod, 1).
 
 
 /*Command Line*/
@@ -118,40 +123,6 @@ help
 cheat
 quit
 */
-
-show_time :-
-    time(M,D),
-    Minute is mod(M , 60),
-    Hour is M // 60,
-    Day is D,
-    write('Today is Day '),write(Day),write(', '),
-    (
-        Hour < 10 -> 
-            write('0'),
-            write(Hour), 
-            write(':'), 
-            (
-                Minute < 10 ->
-                    write('0'),
-                    write(Minute), 
-                    write('.'),nl; 
-                % else
-                    write(Minute),
-                    write('.'),nl
-            );
-        % else
-            write(Hour),
-            write(':'),
-            (
-                Minute < 10 -> 
-                    write('0'),
-                    write(Minute), 
-                    write('.'),nl;
-                % else 
-                    write(Minute),
-                    write('.'),nl
-            )
-    ).
 
 start_game :-
     title_art,
@@ -210,8 +181,68 @@ start :-
 
     write('Yeayy!! you choose '), write(P), write(' \\(^o^)/'), nl,
     write('Now, time to work! May God of Fortune be with you.'), nl,
-    write('~ Itterashai ~'), nl.
+    write('                ~ Itterashai ~'), nl.
     
+
+
+status :-
+    location(player,X,Y),
+    level(X),
+    job(P),
+    money(M),
+    level_farming(Farm),
+    level_fishing(Fish),
+    level_ranching(Ranch),
+    level_fishing_rod(Rod),
+    level_shovel(Shovel),
+    Exp(E),
+    exp_farming(E_farm),
+    exp_fishing(E_fish),
+    exp_ranching(E_ranch),
+    exp_batas(E_batas),
+    exp_batas_farming(E_batas_farm),
+    exp_batas_fishing(E_batas_fish),
+    exp_batas_ranching(E_batas_ranch),
+    write('          ________________________________________________________'),nl.
+    write('         /\\                                                      \\'),nl,
+    write('     (O)===)><><><><><><><><><><><><><><><><><><><><><><><><><><><)==(O)'),nl,
+    write('         \\/''''''''''''''''''''''''''''''''''''''''''''''''''''''/'),nl,
+    write('         /                                                        \\'),nl,
+    write('        /                                                          \\'),nl,
+    write('       /&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\\'),nl,
+    write('      ||                                                             ||'),nl,
+    write('          '),show_time,nl,
+    write('             LEVEL          :  '),write(X),write('  ('),write(E),write(' / '),write(E_batas),write(')'),nl,
+    write('             JOB            :  '),write(P),nl,
+    write('             MONEY          :  '),write(M),nl,nl,nl,nl,
+    write('      ----------------------------------------------------------------'),nl,nl,
+    write('             FARMING LEVEL  : '),write(Farm),write('  ('),write(E_farm),write(' / '),write(E_batas_farm),write(')'),nl,nl,
+    write('             FISHING LEVEL  : '),write(Fish),write('  ('),write(E_fish),write(' / '),write(E_batas_fish),write(')'),nl,nl,
+    write('             RANCHING LEVEL : '),write(Ranch),write('  ('),write(E_ranch),write(' / '),write(E_batas_ranch),write(')'),nl,nl,nl,
+    write('      ----------------------------------------------------------------'),nl,nl,
+    write('             EQUIPMENTS'),nl,
+    write('      ----------------------------------------------------------------'),nl,nl,
+    write('                SHOVEL      : '),write(Shovel),nl,nl,
+    write('                FISHING ROD : '),write(Rod),nl,nl,
+    write('      ||                                                              ||'),nl,
+    write('       \\&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&/'),nl,
+    write('        \\                                                           /'),nl,
+    write('         \\                                                         /'),nl
+    write('         /\\''''''''''''''''''''''''''''''''''''''''''''''''''''''\\'),nl,
+    write('     (O)===)><><><><><><><><><><><><><><><><><><><><><><><><><><><)==(O)'),nl,
+    write('         \\/______________________________________________________/'),nl.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* Ingat diubah ! */

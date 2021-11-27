@@ -1,4 +1,4 @@
-/* File: fact.pl */
+/* Modul: Fact */
 /* Daftar fakta untuk fishing, farming, dan ranching */
 
 /*                     - - - - - DEFINISI FAKTA - - - - -                        */
@@ -12,7 +12,7 @@
 
 /*                                  FARMING                                      */
 /* ============================================================================= */
-/* plant(X)           : X adalah plant (hasil panen)                             *
+/* crop(X)            : X adalah crop (hasil panen)                             *
  * seed(X)            : X adalah seed                                            *
  * price(X,Y)         : X seharga Y                                              *
  * exp_yield(X,Y)     : berhasil panen X -> mendapat exp Y                       *
@@ -75,35 +75,34 @@ fishrank(king_crab,4).
 fishrank(arowana,5).
 fishrank(shark,5).
 
-
 /* FARMING */
 
 /* Plant */
-plant(carrot).
-plant(corn).
-plant(potato).
-plant(tomato).
-plant(mushroom).
-plant(onion).
-plant(garlic).
-plant(radish).
-plant(asparagus).
-plant(broccoli).
-plant(bell_pepper).
-plant(daikon).
-plant(cucumber).
-plant(cauliflower). 
-plant(beetroots).
-plant(cabbage).
-plant(cilantro).
-plant(chili_pepper).
-plant(bok_choy).
-plant(pumpkin).
-plant(melon). 
-plant(strawberry).
-plant(raspberry).
-plant(blueberry).
-plant(wasabi).
+crop(carrot).
+crop(corn).
+crop(potato).
+crop(tomato).
+crop(mushroom).
+crop(onion).
+crop(garlic).
+crop(radish).
+crop(asparagus).
+crop(broccoli).
+crop(bell_pepper).
+crop(daikon).
+crop(cucumber).
+crop(cauliflower). 
+crop(beetroots).
+crop(cabbage).
+crop(cilantro).
+crop(chili_pepper).
+crop(bok_choy).
+crop(pumpkin).
+crop(melon). 
+crop(strawberry).
+crop(raspberry).
+crop(blueberry).
+crop(wasabi).
 
 /*Plants' Seed*/
 seed(carrot_seed).
@@ -158,6 +157,34 @@ grow_day(strawberry_seed,9).
 grow_day(raspberry_seed,9).
 grow_day(blueberry_seed,9).
 grow_day(wasabi_seed,14).
+
+/* Seed Grow Into Plant */
+
+grow_into(carrot_seed,carrot).
+grow_into(corn_seed,corn).
+grow_into(potato_seed,potato).
+grow_into(tomato_seed,tomato).
+grow_into(mushroom_seed,mushroom).
+grow_into(onion_seed,onion).
+grow_into(garlic_seed,garlic).
+grow_into(radish_seed,radish).
+grow_into(asparagus_seed,asparagus).
+grow_into(broccoli_seed,broccoli).
+grow_into(bell_pepper_seed,bell_pepper).
+grow_into(daikon_seed,daikon).
+grow_into(cucumber_seed,cucumber).
+grow_into(cauliflower_seed,cauliflower). 
+grow_into(beetroots_seed,beetroots).
+grow_into(cabbage_seed,cabbage).
+grow_into(cilantro_seed,cilantro).
+grow_into(chili_pepper_seed,chili_pepper).
+grow_into(bok_choy_seed,bok_choy).
+grow_into(pumpkin_seed,pumpkin).
+grow_into(melon_seed,melon).
+grow_into(strawberry_seed,strawberry).
+grow_into(raspberry_seed,raspberry).
+grow_into(blueberry_seed,blueberry).
+grow_into(wasabi_seed,wasabi).
 
 
 /* RANCHING */
