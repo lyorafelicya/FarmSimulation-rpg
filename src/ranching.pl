@@ -1,20 +1,9 @@
 /* Modul: Ranching */
 
-:-include('map.pl').
-:-include('update.pl').
-:-include('art.pl').
-:-include('inventory.pl').
-
 :- dynamic(chicken_list/1).
 :- dynamic(cow_list/1).
 :- dynamic(sheep_list/1).
-
-
-:- dynamic(level_ranching/1).
-level_ranching(1).
-
-:- dynamic(time/2).
-time(360,1).
+:- dynamic(harvest_number/1).
 
 /*Animal*/
 chicken_list([]).
@@ -28,14 +17,14 @@ count_animal(Animal, U) :-
 
 
 print_ranch :-
-    write('Welcome to the Ranch! You have :'),nl,
+    write('   Welcome to the Ranch! You have :'),nl,
     count_animal(chicken, CountC),
-    count_animal(cow, CountS),
-    count_animal(sheep, CountCow),
-    write(CountC),write(' chicken'),nl,
-    write(CountS),write(' sheep'),nl,
-    write(CountCow),write(' cow'),nl,nl,
-    write('Which livestock\'s product do you want to collect?'),nl,nl.
+    count_animal(sheep  , CountS),
+    count_animal(cow  , CountCow),
+    write('  '),write(CountC)   ,write(' chicken'),nl,
+    write('  '),write(CountS)   ,write(' sheep')  ,nl,
+    write('  '),write(CountCow) ,write(' cow')    ,nl,nl,
+    write('   Which livestock\'s product do you want to collect?'),nl,nl.
 
 /*Add Livestock*/
 /*Adding chicken*/
@@ -177,23 +166,27 @@ cek_chicken(L,Day) :-
     count_animal(chicken , Count),
     Count == 0 ->
         (
-            write('You haven\'t bought any chicken ~("v")~'),nl,
-            write('You can buy chicken at Market.'),nl
+            write('   You haven\'t bought any chicken ~("v")~'),nl,
+            write('   You can buy chicken at Market.'),nl
         );
         (
-            collect_egg(N),
+            collect_egg(N), !,
+            assertz(harvest_number(N)),
             N == 0 ->
                 (
-                    write('Your chicken has\'t layed any egg'),nl,
-                    write('Please check again later.'),nl
+                    retract(harvest_number(N)),
+                    write('   Your chicken has\'t laid any egg'),nl,
+                    write('   Please check again later.'),nl
                 );
                 (
-                    write('Wow! some of your chickens have laid an egg!'),nl,
-                    write('You got '),write(N),write(' eggs!'),nl,
+                    retract(harvest_number(N)),
+                    write('   Wow! some of your chickens have laid an egg!'),nl,
+                    write('   You got '),write(N),write(' eggs!'),nl,
                     exp_yield(egg,Exp),
-                    TotalExp = Exp * N,
-                    exp_ranching(TotalExp),
-                    write('You gained '),write(TotalExp),write(' ranching exp!'),nl
+                    mult_ranching(Multi),
+                    TotalExp is round(Exp * N * Multi),
+                    add_ranching(TotalExp),
+                    write('   You gained '),write(TotalExp),write(' ranching exp!'),nl
                 )
         ).
 
@@ -201,23 +194,27 @@ cek_sheep(L,Day) :-
     count_animal(sheep , Count),
     Count == 0 ->
         (
-            write('You haven\'t bought any sheep ~("v")~'),nl,
-            write('You can buy sheep at Market.'),nl
+            write('   You haven\'t bought any sheep ~("v")~'),nl,
+            write('   You can buy sheep at Market.'),nl
         );
         (
-            collect_wool(N),
+            collect_wool(N) , !, 
+            assertz(harvest_number(N)),
             N == 0 ->
                 (
-                    write('Your sheep has\'t produced any wool'),nl,
-                    write('Please check again later.'),nl
+                    retract(harvest_number(N)),
+                    write('   Your sheep has\'t produced any wool'),nl,
+                    write('   Please check again later.'),nl
                 );
                 (
-                    write('Wow! All you sheeps have produced a wool!'),nl,
-                    write('You got '),write(N),write(' wools!'),nl,
+                    retract(harvest_number(N)),
+                    write('   Wow! All you sheeps have produced a wool!'),nl,
+                    write('   You got '), write(N), write(' wools!'), nl,
                     exp_yield(wool,Exp),
-                    TotalExp = Exp * N,
-                    exp_ranching(TotalExp),
-                    write('You gained '),write(TotalExp),write(' ranching exp!'),nl
+                    mult_ranching(Multi),
+                    TotalExp is round(Exp * N * Multi),
+                    add_ranching(TotalExp),
+                    write('   You gained '), write(TotalExp), write(' ranching exp!'), nl
                 )
         ).
 
@@ -225,30 +222,36 @@ cek_cow(L,Day) :-
     count_animal(cow , Count),
     Count == 0 ->
         (
-            write('You haven\'t bought any cow ~("v")~'),nl,
-            write('You can buy cow at Market.'),nl
+            write('   You haven\'t bought any cow ~("v")~'),nl,
+            write('   You can buy cow at Market.'),nl
         );
         (
-            collect_milk(N),
+            collect_milk(N), !,
+            assertz(harvest_number(N)),
             N == 0 ->
                 (
-                    write('Your cow has\'t produced any milk'),nl,
-                    write('Please check again later.'),nl
+                    retract(harvest_number(N)),
+                    write('   Your cow has\'t produced any milk'),nl,
+                    write('   Please check again later.'),nl
                 );
                 (
-                    write('Wow! All you sheeps have produced a wool!'),nl,
-                    write('You got '),write(N),write(' bottles full milk!'),nl,
+                    retract(harvest_number(N)),
+                    write('   Wow! All you sheeps have produced a wool!'),nl,
+                    write('   You got '),write(N),write(' bottles full milk!'),nl,
                     exp_yield(milk,Exp),
-                    TotalExp = Exp * N,
-                    exp_ranching(TotalExp),
-                    write('You gained '),write(TotalExp),write(' ranching exp!'),nl
+                    mult_ranching(Multi),
+                    TotalExp is round(Exp * N * Multi),
+                    add_ranching(TotalExp),
+                    write('   You gained '),write(TotalExp),write(' ranching exp!'),nl
                 )
         ).
 
 
-
 is_near_ranch(X,Y) :- location(ranch,X,Y).
 
+ranch :- has_not_started_game, !.
+ranch :- has_not_started, !.
+ranch :- has_ended, !.
 ranch :-
     location(player,X,Y),
     is_near_ranch(X,Y) ->
@@ -257,11 +260,11 @@ ranch :-
         print_ranch,
         level_ranching(L),
         time(M,Day),
-        read(Animal),
+        write('  >'),read(Animal),
         (((Animal == 'chicken') -> cek_chicken(L,Day));
          ((Animal  == 'sheep')  -> cek_sheep(L,Day));
          ((Animal  == 'cow')    -> cek_cow(L,Day)))
     );
     (
-        write('You are far from Ranch. Go to Ranch to do ranching.'),nl
+        write('   You are not at the Ranch! Go to the \'R\' tile to use this command.'),nl
     ).

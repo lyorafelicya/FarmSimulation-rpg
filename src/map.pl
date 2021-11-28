@@ -50,6 +50,9 @@ location(water, 11, 8).
 location(water, 12, 8).
 location(water, 13, 8).
 
+map :- has_not_started_game, !.
+map :- has_not_started, !.
+map :- has_ended, !.
 map :-  
     map_size(X,Y),
     print_hash,
@@ -106,15 +109,18 @@ is_border(X,Y) :-
 is_water(X,Y) :- location(water, X, Y). 
 
 /*Move : Up*/
-up :-
+w :- has_not_started_game, !.
+w :- has_not_started, !.
+w :- has_ended, !.
+w :-
     location(player, X, Y),
     NewX is X,
     NewY is Y - 1,
 
     is_border(NewX, NewY) -> 
     (
-        write('You hit the wall. You got head bump.'), nl,
-        write('Daijoubu desu ka? (@ v @)//'), nl 
+        write('   You hit the wall. You got head bump.'), nl,
+        write('   Daijoubu desu ka? (@ v @)//'), nl 
     );
     % else
     (   
@@ -123,8 +129,8 @@ up :-
         NewY is Y - 1,
         is_water(NewX, NewY) ->
         (
-            write('You nearly drowned. Your clothes get soaked.'), nl,
-            write('Daijoubu desu ka? (@ v @)//'), nl 
+            write('   You nearly drowned. Your clothes get soaked.'), nl,
+            write('   Daijoubu desu ka? (@ v @)//'), nl 
         );
         % else
         (
@@ -138,15 +144,18 @@ up :-
     add_time(3).
 
 /*Move : Down*/
-down :-
+s :- has_not_started_game, !.
+s :- has_not_started, !.
+s :- has_ended, !.
+s :-
     location(player, X, Y),
     NewX is X,
     NewY is Y + 1,
 
     is_border(NewX, NewY) -> 
     (
-        write('You hit the wall. You got head bump.'), nl,
-        write('Daijoubu desu ka? (@ v @)//'), nl 
+        write('   You hit the wall. You got head bump.'), nl,
+        write('   Daijoubu desu ka? (@ v @)//'), nl 
     );
     % else
     (
@@ -155,8 +164,8 @@ down :-
         NewY is Y + 1,
         is_water(NewX, NewY) ->
         (
-            write('You nearly drowned. Your clothes get soaked.'), nl,
-            write('Daijoubu desu ka? (@ v @)//'), nl 
+            write('   You nearly drowned. Your clothes get soaked.'), nl,
+            write('   Daijoubu desu ka? (@ v @)//'), nl 
         );
         % else
         (
@@ -173,15 +182,18 @@ down :-
     time_check.
 
 /*Move : Left*/
-left :-
+a :- has_not_started_game, !.
+a :- has_not_started, !.
+a :- has_ended, !.
+a :-
     location(player, X, Y),
     NewX is X - 1,
     NewY is Y,
     
     is_border(NewX, NewY) -> 
     (
-        write('You hit the wall. You got head bump.'), nl,
-        write('Daijoubu desu ka? (@ v @)//'), nl 
+        write('   You hit the wall. You got head bump.'), nl,
+        write('   Daijoubu desu ka? (@ v @)//'), nl 
     );
     % else
     (
@@ -190,8 +202,8 @@ left :-
         NewY is Y,
         is_water(NewX, NewY) ->
         (
-            write('You nearly drowned. Your clothes get soaked.'), nl,
-            write('Daijoubu desu ka? (@ v @)//'), nl 
+            write('   You nearly drowned. Your clothes get soaked.'), nl,
+            write('   Daijoubu desu ka? (@ v @)//'), nl 
         );
         % else
         (
@@ -208,15 +220,18 @@ left :-
     time_check.
 
 /*Move : Right*/
-right :-
+d :- has_not_started_game, !.
+d :- has_not_started, !.
+d :- has_ended, !.
+d :-
     location(player, X, Y),
     NewX is X + 1,
     NewY is Y,
 
     is_border(NewX, NewY) -> 
     (
-        write('You hit the wall. You got head bump.'), nl,
-        write('Daijoubu desu ka? (@ v @)//'), nl 
+        write('   You hit the wall. You got head bump.'), nl,
+        write('   Daijoubu desu ka? (@ v @)//'), nl 
     );
     % else
     (
@@ -225,8 +240,8 @@ right :-
         NewY is Y,
         is_water(NewX, NewY) ->
         (
-            write('You nearly drowned. Your clothes get soaked.'), nl,
-            write('Daijoubu desu ka? (@ v @)//'), nl 
+            write('   You nearly drowned. Your clothes get soaked.'), nl,
+            write('   Daijoubu desu ka? (@ v @)//'), nl 
         );
         % else
         (

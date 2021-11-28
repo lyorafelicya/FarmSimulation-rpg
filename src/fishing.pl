@@ -72,26 +72,32 @@ randomFish(5,Fish) :-
     ((Chance >= 7 , Chance < 8) -> getFish(4,Fish));
     ((Chance >= 8 , Chance < 11) -> getFish(5,Fish))).
 
-
 isNearWater(X,Y) :- NewX is X+1 , location(water, NewX,Y).
 isNearWater(X,Y) :- NewX is X-1 , location(water, NewX,Y).
 isNearWater(X,Y) :- NewY is Y+1 , location(water, X,NewY).
 isNearWater(X,Y) :- NewY is Y-1 , location(water, X,NewY).
 
+
+fishing :- has_not_started_game, !.
+fishing :- has_not_started, !.
+fishing :- has_ended, !.
 fishing :-
     location(player,X,Y),
     isNearWater(X,Y) ->
     (
-        level_fishing_rod(Level),
+        tool(fishing_rod, Level),
         randomFish(Level,Fish),
         insert_inv(Fish),
-        write('Wow! You caught '),write(Fish),write('.'),nl,
+        write('   Wow! You caught '),write(Fish),write(' fish.'),nl,
         exp_yield(Fish,Exp),
-        add_fishing(Exp),
-        write('You gained '),write(Exp),write(' fishing exp!'),nl,
-        Minute = 60 / (Level+1),
+        mult_fishing(M),
+        TotalExp is round(M * Exp),
+        write('   You gained '),write(Exp),write(' fishing exp!'),nl,
+        nl,
+        add_fishing(TotalExp), !,
+        Minute is round(200 / (log(Level + 2) + 1)),
         add_time(Minute)
     );
     (
-        write('You are far from any pond. Find a pond for fishing.'),nl
+        write('   You are far from any pond. Find a pond for fishing.'),nl, nl
     ).

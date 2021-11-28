@@ -1,8 +1,8 @@
 # IF2121_K02_G05
 
 # Tugas Besar IF2121 Logika Komputasional
-> Membuat sebuah farm simulation role-playing game sebagai seorang programmer yang harus bertani untuk membayar hutangnya dengan menggunakan bahasa pemrograman deklaratif Prolog (gunakan GNU Prolog).
-
+## KIMI NO TUBES
+> Sebuah farm simulation role-playing game sebagai seorang programmer yang harus bertani untuk membayar hutangnya dengan menggunakan bahasa pemrograman deklaratif Prolog (gunakan GNU Prolog). Kamu sukses membayar hutangmu jika berhasil mengumpulkan 20000 gold dalam jangka waktu 1 tahun. Ganbatte!
 
 ## Daftar Anggota Kelompok
 <table>
@@ -15,3 +15,10 @@
 </table>
 
 ## Cara mengeksekusi program
+
+1. Pastikan sudah menginstall GNU Prolog
+2. Buka file main.pl melalui GNU Prolog. Apabila telah berada di dalam GNU Prolog, ketik 'consult('main.pl').' untuk me-run program
+3. Jika sudah berhasil dicompile, masuk ke dalam permainan dengan mengetikkan 'start_game.'
+4. Untuk memulai permainan, ketik 'start.'
+5. Ketik 'help.' untuk mengetahui command yang bisa digunakan
+6. Have fun!
