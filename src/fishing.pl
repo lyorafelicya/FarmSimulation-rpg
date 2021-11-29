@@ -44,27 +44,28 @@ getFish(5,Fish) :-
     Fish = Res.
 
 
-randomFish(1,Fish) :- getFish(1,Fish).
+randomFish(1,Fish) :- !,
+    getFish(1,Fish).
 
-randomFish(2,Fish) :-
+randomFish(2,Fish) :- !,
     random(1,11,Chance),
     (((Chance >= 1 , Chance < 6) -> getFish(1,Fish));
     ((Chance >= 6 , Chance < 11) -> getFish(2,Fish))).
 
-randomFish(3,Fish) :-
+randomFish(3,Fish) :- !,
     random(1,11,Chance),
     (((Chance >= 1 , Chance < 4) -> getFish(1,Fish));
     ((Chance >= 4 , Chance < 8) -> getFish(2,Fish));
     ((Chance >= 8 , Chance < 11) -> getFish(3,Fish))).
 
-randomFish(4,Fish) :-
+randomFish(4,Fish) :- !,
     random(1,11,Chance),
     (((Chance >= 1 , Chance < 3) -> getFish(1,Fish));
     ((Chance >= 3 , Chance < 6) -> getFish(2,Fish));
     ((Chance >= 6 , Chance < 8) -> getFish(3,Fish));
     ((Chance >= 8 , Chance < 11) -> getFish(4,Fish))).
 
-randomFish(5,Fish) :-
+randomFish(5,Fish) :- Level >= 5, !,
     random(1,11,Chance),
     (((Chance >= 1 , Chance < 2) -> getFish(1,Fish));
     ((Chance >= 2 , Chance < 5) -> getFish(2,Fish));
