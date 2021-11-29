@@ -50,6 +50,7 @@ chance_meet_fairy :-
 
 meet_fairy:- \+ have_meet_paimon,
     nl,nl,
+    paimon_art,
     write('    hey...hey....HEYYYYYY !'),nl,nl,
     write('                                         who are you ?! Where am I ?!'),nl,
     write('    fufufu , Behold~                                                 '),nl,

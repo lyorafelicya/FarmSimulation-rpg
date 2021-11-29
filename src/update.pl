@@ -188,13 +188,13 @@ check_state.
 
 goal_state :- 
     money(Money),
-    time(M,D),
+    time(_,D),
     Money >= 20000,
     D =< 20.
 
 fail_state :- 
     money(Money),
-    time(M,D),
+    time(_,D),
     Money < 20000,
     D > 20.
 
@@ -203,14 +203,8 @@ fail_state :-
 print_goal_state :-
     nl,
     assertz(game_ended),
+    ending_win_story,
     congrats_art,
-    nl,
-    write('   YOU HAVE COLLECTED 20K GOLD~                                   '),nl,
-    write('   YEAY! You\'ve paid your debts~                                 '),nl,
-    nl,
-    write('   Without further ado, time to reincarnate back to earth ( ^-^)//'),nl,
-    write('   Bye byeeee~~                                                   '),nl,
-    nl,
     nl,
     credit_art,
     nl.
@@ -218,17 +212,7 @@ print_goal_state :-
 
 print_fail_state :-
     assertz(game_ended),
-    write('   It\'s the morning of the 21st day. '), nl,
-    write('   You wake up just to see Winter Shogun is outside your house.'), nl,
-    write('   You think you just need to give him more food, so you open your door.'), nl,
-    write('   The Winter Shogun stands tall.'), nl, 
-    nl,
-    write('   Without any ado, he draws his glacial katana from its sheath.'), nl,
-    write('   Your last memory before dying is the blurry vision of the '), nl,
-    write('   Winter Shogun slashing his katana through your chest.'), nl,
-    nl,
-    write('   You are now in the other world with Aqua-sama.'), nl,
-    nl,
+    game_over_story,
     game_over_art,
     nl.
 

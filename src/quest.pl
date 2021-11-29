@@ -98,13 +98,13 @@ claim_quest :- nl,
 
 /* Collect Items */
 collect_quest :- 
-    take_quest_fish, inv(I),
+    take_quest_fish, inv(_),
     take_quest_crop,
     take_quest_product.
 
 /* Collect Fish */
 take_quest_fish :- 
-    quest_req(X,Y,Z),
+    quest_req(X,_,_),
     retract(inv(I)), 
     take_quest_fish(I, X, NewI),
     assertz(inv(NewI)).
@@ -135,7 +135,7 @@ take_quest_fish(Inv, N, NewInv) :-
 
 /* Collect Crops */
 take_quest_crop :- 
-    quest_req(X,Y,Z),
+    quest_req(_,Y,_),
     retract(inv(I)), 
     take_quest_crop(I, Y, NewI),
     assertz(inv(NewI)).
@@ -166,7 +166,7 @@ take_quest_crop(Inv, N, NewInv) :-
 
 /* Collect Products */
 take_quest_product :- 
-    quest_req(X,Y,Z),
+    quest_req(_,_,Z),
     retract(inv(I)), 
     take_quest_product(I, Z, NewI),
     assertz(inv(NewI)).

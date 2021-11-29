@@ -8,7 +8,7 @@ fishList([arowana,shark], 5).
 
 
 repeatFish(1 , [Head | _ ] , Head).
-repeatFish(Num , [Head | Tail] , Fish) :-
+repeatFish(Num , [ _ | Tail] , Fish) :-
     NewNum is Num-1,
     repeatFish(NewNum , Tail , Res),
     Fish = Res.
@@ -65,7 +65,7 @@ randomFish(4,Fish) :- !,
     ((Chance >= 6 , Chance < 8) -> getFish(3,Fish));
     ((Chance >= 8 , Chance < 11) -> getFish(4,Fish))).
 
-randomFish(5,Fish) :- Level >= 5, !,
+randomFish(Level,Fish) :- Level >= 5, !,
     random(1,11,Chance),
     (((Chance >= 1 , Chance < 2) -> getFish(1,Fish));
     ((Chance >= 2 , Chance < 5) -> getFish(2,Fish));

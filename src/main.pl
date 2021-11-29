@@ -118,7 +118,8 @@ start :- game_started, !,
     write('    Now go play and have fun (before Winter Shogun comes)!'), nl, nl.
 
 start :-
-    assertz(game_started),
+    assertz(game_started), nl,
+    opening_story, nl,
     start_art,
     nl, nl,
     write('    Welcome to Kimi no Tubes! You can choose one of three professions below:'), nl,nl,

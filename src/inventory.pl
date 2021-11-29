@@ -17,14 +17,14 @@ throw_item :- has_not_started, !.
 throw_item :- has_ended, !.
 throw_item :- write('  Format of use: throw_item(Item) or throw_item(Item, Qty).'), nl, !.
 
-throw_item(Item) :- has_not_started_game, !.
-throw_item(Item) :- has_not_started, !.
-throw_item(Item) :- has_ended, !.
+throw_item(_) :- has_not_started_game, !.
+throw_item(_) :- has_not_started, !.
+throw_item(_) :- has_ended, !.
 throw_item(Item) :- delete_inv(Item), !.
 
-throw_item(Item, Qty) :- has_not_started_game, !.
-throw_item(Item, Qty) :- has_not_started, !.
-throw_item(Item, Qty) :- has_ended, !.
+throw_item(_ , _) :- has_not_started_game, !.
+throw_item(_ , _) :- has_not_started, !.
+throw_item(_ , _) :- has_ended, !.
 throw_item(Item, Qty) :- delete_inv(Item, Qty), !.
 
 summon_item :- has_not_started_game, !.
@@ -32,14 +32,14 @@ summon_item :- has_not_started, !.
 summon_item :- has_ended, !.
 summon_item :- write('  Format of use: summon_item(Item) or summon_item(Item, Qty).'), nl, !.
 
-summon_item(Item) :- has_not_started_game, !.
-summon_item(Item) :- has_not_started, !.
-summon_item(Item) :- has_ended, !.
+summon_item(_) :- has_not_started_game, !.
+summon_item(_) :- has_not_started, !.
+summon_item(_) :- has_ended, !.
 summon_item(Item) :- insert_inv(Item), !.
 
-summon_item(Item, Qty) :- has_not_started_game, !.
-summon_item(Item, Qty) :- has_not_started, !.
-summon_item(Item, Qty) :- has_ended, !.
+summon_item(_ , _) :- has_not_started_game, !.
+summon_item(_ , _) :- has_not_started, !.
+summon_item(_ , _) :- has_ended, !.
 summon_item(Item, Qty) :- insert_inv(Item, Qty), !.
 
 /* Search Item */
@@ -50,7 +50,7 @@ search_inv(Item) :-
 
 search_item_process(Inv, Item) :-
     Inv = [Head|Tail],
-    Head = (HeadItem, HeadQty),
+    Head = (HeadItem, _),
     HeadItem == Item -> 
         !;
     % else
@@ -94,7 +94,7 @@ insert_inv(Item, Qty) :-
     assertz(inv(NewI)).
 
 insert_item_process([], Item, Qty, [(Item, Qty)]) :- !.
-insert_item_process(Inv, Item, 0, Inv) :- !.
+insert_item_process(Inv, _, 0, Inv) :- !.
 
 insert_item_process(Inv, Item, Qty, NewInv) :-
     Inv = [Head|Tail],
@@ -123,13 +123,13 @@ delete_inv(Item, Qty) :-
     delete_item_process(I, Item, Qty, NewI),
     assertz(inv(NewI)).
 
-delete_item_process([], Item, Qty, []) :- 
+delete_item_process([], _, _, []) :- 
     write('   Item not found!'), nl, !.
 
-delete_item_process(I, fishing_rod, Qty, I) :-
+delete_item_process(I, fishing_rod, _, I) :-
     write('   You cannot throw away your fishing rod!'), nl, !.
 
-delete_item_process(I, shovel, Qty, I) :-
+delete_item_process(I, shovel, _, I) :-
     write('   You cannot throw away your shovel!'), nl, !.
 
 delete_item_process(Inv, Item, Qty, NewInv) :-
@@ -218,7 +218,7 @@ count_item_process([], 0) :- !.
 
 count_item_process(Inv, N) :-
     Inv = [Head|Tail],
-    Head = (Item, Qty),
+    Head = (_, Qty),
     count_item_process(Tail, NextN),
     N is Qty + NextN.
 

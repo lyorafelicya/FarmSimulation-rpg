@@ -312,7 +312,6 @@ price(milk,50).
 price(wool,80).
 
 
-
 /* EXP YIELD */
 
 /* Exp from Fish */
@@ -369,16 +368,3 @@ exp_yield(wasabi,600).
 exp_yield(egg,50).
 exp_yield(milk,300).
 exp_yield(wool,500).
-
-
-/*cheat*/
-
-/*lovemoney : gives 1 million coins                     */
-/*callgrab  : instantly move avatar to any buildings    */
-/*jump      : instantly move avatar to any coordinates  */
-/*rewind    : reset Day                                 */
-
-cheat(lovemoney).
-cheat(callgrab).
-cheat(jump).
-cheat(rewind).

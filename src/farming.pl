@@ -58,7 +58,7 @@ plant :-
                     tool(shovel, Lvl),
                     NeededTime is round(10 / (Lvl+2)),
                     add_time(NeededTime),
-                    time(M,D),
+                    time(_,D),
                     Hari is D + GrowTime,
                     delete_inv(PlantSeed),
                     retract(location(digged_tile, X, Y)),
@@ -88,8 +88,8 @@ plant :-
 is_crop(X, Y) :- location(crop, X, Y).
 
 is_harvestable(X,Y) :- 
-    time(M,D),
-    crop_data(CropName, X, Y, Hari),
+    time(_,D),
+    crop_data(_, X, Y, Hari),
     D >= Hari.
 
 harvest :- has_not_started_game, !.
@@ -104,7 +104,7 @@ harvest :-
         is_harvestable(X, Y) ->
         (
             location(player, X, Y),
-            retract(crop_data(CropName, X, Y, Hari)),
+            retract(crop_data(CropName, X, Y, _)),
             retract(location(crop, X, Y)),
             tool(shovel, Lvl),                      
             NewTime is round(10 / (Lvl+2)),

@@ -54,19 +54,18 @@ map :- has_not_started_game, !.
 map :- has_not_started, !.
 map :- has_ended, !.
 map :-  
-    map_size(X,Y),
     print_hash,
     print_core_map,
     print_hash, !.
 
 print_core_map :- print_core_map(1), !.
-print_core_map(N) :- map_size(X,Y), N == Y, print_row(N), !.
+print_core_map(N) :- map_size(_,Y), N == Y, print_row(N), !.
 print_core_map(N) :-
     print_row(N), 
     NextN is N + 1,
     print_core_map(NextN).
 
-print_hash :- map_size(X,Y), Count is X + 1, print_hash(Count).
+print_hash :- map_size(X,_), Count is X + 1, print_hash(Count).
 print_hash(0) :- write('#'), nl, !.
 print_hash(N) :- 
     write('#'),
@@ -74,7 +73,7 @@ print_hash(N) :-
     print_hash(NextN).
 
 print_row(Row) :- write('#'), print_row(1, Row).
-print_row(Col, Row) :- map_size(X,Y), Col =:= X + 1, write('#'), nl, !.
+print_row(Col, _) :- map_size(X,_), Col =:= X + 1, write('#'), nl, !.
 print_row(Col, Row) :- 
     (
       \+ location(Place, Col, Row) -> 

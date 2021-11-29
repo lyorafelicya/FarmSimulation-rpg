@@ -30,7 +30,6 @@ print_ranch :-
 /*Adding chicken*/
 add_chicken(0) :- !.
 add_chicken(Add):-
-    time(M,Day),
     collect_egg_time(T),
     retract(chicken_list(Current)),
     append(Current , [T] , NewCurrent),
@@ -41,7 +40,6 @@ add_chicken(Add):-
 /*Adding cow*/
 add_cow(0) :- !.
 add_cow(Add):-
-    time(M,Day),
     collect_milk_time(T),
     retract(cow_list(Current)),
     append(Current , [T] , NewCurrent),
@@ -52,7 +50,6 @@ add_cow(Add):-
 /*Adding sheep*/
 add_sheep(0) :- !.
 add_sheep(Add):-
-    time(M,Day),
     collect_wool_time(T),
     retract(sheep_list(Current)),
     append(Current , [T] , NewCurrent),
@@ -63,14 +60,14 @@ add_sheep(Add):-
 
 /* Time to Collect */
 collect_egg_time(T) :-
-    time(M,Day),
+    time(_,Day),
     level_ranching(L),
     ((L < 2           -> T is Day + 3);
     ((L >= 2 , L < 5) -> T is Day + 2);
     (L > 4            -> T is Day + 1)).
 
 collect_wool_time(T) :-
-    time(M,Day),
+    time(_,Day),
     level_ranching(L),
     ((L < 2           -> T is Day + 6);
     ((L >= 2 , L < 4) -> T is Day + 5);
@@ -78,7 +75,7 @@ collect_wool_time(T) :-
     (L > 4            -> T is Day + 3)).
 
 collect_milk_time(T) :-
-    time(M,Day),
+    time(_,Day),
     level_ranching(L),
     (L < 3 -> (T is Day + 3) ; (T is Day + 2)).
 
@@ -93,7 +90,7 @@ collect_egg_process([], 0, []) :- !.
 
 collect_egg_process(List, N, NewL) :- 
     List = [Head|Tail],
-    time(Min, Day),
+    time(_, Day),
     Head =< Day -> 
         ( List = [Head|Tail],
           collect_egg_time(T),
@@ -118,7 +115,7 @@ collect_wool_process([], 0, []) :- !.
 
 collect_wool_process(List, N, NewL) :- 
     List = [Head|Tail],
-    time(Min, Day),
+    time(_, Day),
     Head =< Day -> 
         ( List = [Head|Tail],
           collect_wool_time(T),
@@ -143,7 +140,7 @@ collect_milk_process([], 0, []) :- !.
 
 collect_milk_process(List, N, NewL) :- 
     List = [Head|Tail],
-    time(Min, Day),
+    time(_, Day),
     Head =< Day -> 
         ( List = [Head|Tail],
           collect_milk_time(T),
@@ -162,7 +159,7 @@ collect_milk_process(List, N, NewL) :-
 /*ERROR : BIKIN FUNGSI KHUSUS PRINT BANYAK EGG atau MILK atau WOOL YANG DITERIMA*/
 /* Cause: If Then Else problem */
 
-cek_chicken(L,Day) :-
+cek_chicken:-
     count_animal(chicken , Count),
     Count == 0 ->
         (
@@ -190,7 +187,7 @@ cek_chicken(L,Day) :-
                 )
         ).
 
-cek_sheep(L,Day) :-
+cek_sheep:-
     count_animal(sheep , Count),
     Count == 0 ->
         (
@@ -218,7 +215,7 @@ cek_sheep(L,Day) :-
                 )
         ).
 
-cek_cow(L,Day) :-
+cek_cow:-
     count_animal(cow , Count),
     Count == 0 ->
         (
@@ -258,12 +255,10 @@ ranch :-
     (
         barn_art,
         print_ranch,
-        level_ranching(L),
-        time(M,Day),
         write('  >'),read(Animal),
-        (((Animal == 'chicken') -> cek_chicken(L,Day));
-         ((Animal  == 'sheep')  -> cek_sheep(L,Day));
-         ((Animal  == 'cow')    -> cek_cow(L,Day)))
+        (((Animal == 'chicken') -> cek_chicken);
+         ((Animal  == 'sheep')  -> cek_sheep);
+         ((Animal  == 'cow')    -> cek_cow))
     );
     (
         write('   You are not at the Ranch! Go to the \'R\' tile to use this command.'),nl

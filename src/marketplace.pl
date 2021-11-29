@@ -43,9 +43,9 @@ buy :-
                         write('   You have bought '), write(Amount), write(' '), 
                         write(Item), write('!'), nl
                         );
-                        ( write('   The quantity is not valid!'), nl)
+                        (write('   Your inventory is full! Purchase cancelled...'), nl)
                     );
-                    (write('   Your inventory is full! Purchase cancelled...'), nl)
+                    ( write('   The quantity is not valid!'), nl)
                 );
                 (write('   You don\'t have enough money to buy this item. Go earn more money first!'), nl)
             );
@@ -68,16 +68,16 @@ buy :-
                         write('   You have bought '), write(Amount), write(' '), 
                         write(Item), write('!'), nl
                         );
-                        (write('   The quantity is not valid!'), nl)
+                        (write('   Your inventory is full! Purchase cancelled...'), nl)
                     );
-                    (write('   Your inventory is full! Purchase cancelled...'), nl)
+                    (write('   The quantity is not valid!'), nl)
                 );
                 write('   You don\'t have enough money to buy this item!'), nl
             );
             
             tool(Item, _) ->
             (
-                money(Money), price_tool(Price),
+                money(Money), price_tool(Item, Price),
                 Money >= Price ->
                 (
                     price_tool(Item, Price),
@@ -152,7 +152,7 @@ print_product :-
                 item_quantity(X, Qty),
                 write('     '), write(Qty), write(' '), write(X), nl
             );
-            level(L)
+            level(_)
         )
     ).
 
@@ -164,7 +164,7 @@ print_crop :-
                 item_quantity(X, Qty),
                 write('     '), write(Qty), write(' '), write(X), nl
             );
-            level(L)
+            level(_)
         )
     ).
 
@@ -176,7 +176,7 @@ print_fish :-
                 item_quantity(X, Qty),
                 write('     '), write(Qty), write(' '), write(X), nl
             );
-            level(L)
+            level(_)
         )
     ).
 
@@ -232,7 +232,7 @@ print_shovel_price :-
         write(' g)'),
         nl
     );
-    level(L).
+    level(_).
 
 print_fishing_rod_price :-
     tool(X,Lvl),
@@ -251,7 +251,7 @@ print_fishing_rod_price :-
         write(' g)'), 
         nl
     );
-    level(L).
+    level(_).
     
 price_tool(Tool, Price) :-
     (Tool == shovel -> price_shovel(Price));
