@@ -44,9 +44,12 @@ house :-
         write('   You are not at your house! Go to the \'H\' tile to use this command.')
     ).
 
+
 chance_meet_fairy :-
     random(0,10,Chance),
     Chance < 1 -> meet_fairy.
+
+chance_meet_fairy.
 
 meet_fairy:- \+ have_meet_paimon,
     nl,nl,

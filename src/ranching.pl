@@ -183,7 +183,8 @@ cek_chicken:-
                     mult_ranching(Multi),
                     TotalExp is round(Exp * N * Multi),
                     add_ranching(TotalExp),
-                    write('   You gained '),write(TotalExp),write(' ranching exp!'),nl
+                    write('   You gained '),write(TotalExp),write(' ranching exp!'),nl,
+                    insert_inv(egg, N)
                 )
         ).
 
@@ -211,7 +212,8 @@ cek_sheep:-
                     mult_ranching(Multi),
                     TotalExp is round(Exp * N * Multi),
                     add_ranching(TotalExp),
-                    write('   You gained '), write(TotalExp), write(' ranching exp!'), nl
+                    write('   You gained '), write(TotalExp), write(' ranching exp!'), nl,
+                    insert_inv(wool, N)
                 )
         ).
 
@@ -239,7 +241,8 @@ cek_cow:-
                     mult_ranching(Multi),
                     TotalExp is round(Exp * N * Multi),
                     add_ranching(TotalExp),
-                    write('   You gained '),write(TotalExp),write(' ranching exp!'),nl
+                    write('   You gained '),write(TotalExp),write(' ranching exp!'),nl,
+                    insert_inv(milk, N)
                 )
         ).
 

@@ -88,13 +88,13 @@ fishing :-
     (
         tool(fishing_rod, Level),
         randomFish(Level,Fish),
-        insert_inv(Fish),
         write('   Wow! You caught '),write(Fish),write(' fish.'),nl,
         exp_yield(Fish,Exp),
         mult_fishing(M),
         TotalExp is round(M * Exp),
         write('   You gained '),write(Exp),write(' fishing exp!'),nl,
         nl,
+        insert_inv(Fish),
         add_fishing(TotalExp), !,
         Minute is round(200 / (log(Level + 2) + 1)),
         add_time(Minute)

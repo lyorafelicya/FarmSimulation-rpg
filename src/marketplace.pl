@@ -34,18 +34,19 @@ buy :-
                 Money >= (PriceEach * Amount) ->
                 (
                     Amount > 0 ->
-                    count_item(N),
-                    N + Amount =< 100 ->
                     (
-                        ( Price is Amount * PriceEach,
-                        sub_money(Price),
-                        insert_inv(Item,Amount),
-                        write('   You have bought '), write(Amount), write(' '), 
-                        write(Item), write('!'), nl
-                        );
-                        (write('   Your inventory is full! Purchase cancelled...'), nl)
-                    );
-                    ( write('   The quantity is not valid!'), nl)
+                        count_item(N),
+                        N + Amount =< 100 ->
+                        (
+                            ( Price is Amount * PriceEach,
+                            sub_money(Price),
+                            insert_inv(Item,Amount),
+                            write('   You have bought '), write(Amount), write(' '), 
+                            write(Item), write('!'), nl
+                            )
+                        );(write('   Your inventory is full! Purchase cancelled...'), nl)
+                        
+                    );( write('   The quantity is not valid!'), nl)
                 );
                 (write('   You don\'t have enough money to buy this item. Go earn more money first!'), nl)
             );
@@ -57,18 +58,14 @@ buy :-
                 Money >= (PriceEach * Amount) ->
                 (
                     Amount > 0 ->
-                    count_item(N),
-                    N + Amount =< 100 ->
                     (
-                        ( Item == 'chicken' -> (add_chicken(Amount));
+                        (Item == 'chicken' -> (add_chicken(Amount));
                         Item == 'sheep' -> (add_sheep(Amount));
-                        Item == 'cow' -> (add_cow(Amount)),
+                        Item == 'cow' -> (add_cow(Amount))),
                         Price is Amount * PriceEach,
                         sub_money(Price),
                         write('   You have bought '), write(Amount), write(' '), 
                         write(Item), write('!'), nl
-                        );
-                        (write('   Your inventory is full! Purchase cancelled...'), nl)
                     );
                     (write('   The quantity is not valid!'), nl)
                 );
